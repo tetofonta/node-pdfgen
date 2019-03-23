@@ -1,11 +1,11 @@
-import PDFDoc from "node-pdfgen/PDFDoc"
+import PDFDoc from "pdfgen/PDFDoc"
 import Label from "pdfgen/components/Label";
 import Image from "pdfgen/components/Image";
 import Line from "pdfgen/components/Line";
 import GridLayout from "pdfgen/components/layouts/GridLayout";
 import SimpleTable from "pdfgen/components/SimpleTable";
 import QRCode from "pdfgen/components/QRCode"
-import F from "node-pdfgen/Font.mjs"
+import F from "pdfgen/Font.mjs"
 
 let doc = new PDFDoc("ciao.pdf", "A4")
     .addComponent(new GridLayout(false, 10, 10, 588)
