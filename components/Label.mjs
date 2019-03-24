@@ -4,6 +4,10 @@ import Canvas from 'canvas'
 import variables from '../cjs';
 const {__dirname} = variables;
 
+Date.prototype.toShortDate = function(){
+ return this.getDate() + "/" + (this.getMonth() + 1) + "/" + this.getFullYear();   
+}
+
 export default class Label extends _Component {
 
     /**
@@ -22,15 +26,20 @@ export default class Label extends _Component {
         this.font = opts.font || __dirname + "/assets/fonts/Roboto-Regular.ttf";
         this.size = opts.size || 11;
         this.fillc = opts.fillColor || "#000000";
+        this.width = Label.__getTextLen(this.text, this.font, this.size);
+        this.height = this.size / .75
+    }
+
+    static __getTextLen(text, font, size){
         const canvas = new Canvas.Canvas(100, 100);
         const ctx = canvas.getContext('2d');
-        let font = opentype.loadSync(this.font);
+        let font = opentype.loadSync(font);
 
         let ascent = 0,
             descent = 0,
             width = 0,
-            scale = 1 / font.unitsPerEm * this.size,
-            glyphs = font.stringToGlyphs(this.text);
+            scale = 1 / font.unitsPerEm * size,
+            glyphs = font.stringToGlyphs(text);
 
         for (let i = 0, len = glyphs.length; i < len; i++) {
             let glyph = glyphs[i];
@@ -49,8 +58,8 @@ export default class Label extends _Component {
             ascent = Math.max(ascent, yMax);
             descent = Math.min(descent, yMin);
         }
-        this.width = width;
-        this.height = this.size / .75
+
+        return width;
     }
 
     _draw(
@@ -58,6 +67,12 @@ export default class Label extends _Component {
         x,
         y
     ) {
+        if(this.text.contains("|PAGE_NO|")) this.text = this.text.replace(/\|PAGE_NO\|/g, doc.page);
+        if(this.text.contains("|DATE_SHRT|")) this.text = this.text.replace(/\|DATE_SHRT\|/g, new Date().getShortDate());
+        if(this.text.contains("|DATE_FULL|")) this.text = this.text.replace(/\|DATE_FULL\|/g, new Date());
+
+        this.width = Label.__getTextLen(this.text, this.font, this.size);
+
         doc.font(this.font).fontSize(this.size).fillColor(this.fillc).text(this.text, x, y);
         doc.makeDefault();
     }
