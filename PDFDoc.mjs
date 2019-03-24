@@ -26,7 +26,7 @@ export default class PDFDoc extends PDFDocument{
         this.default_font = opts.font || __dirname + "/assets/fonts/Roboto-Regular.ttf";
         this.default_fontsize = opts.fontSize || 11;
         this.default_stroke = opts.strokeColor || "#000";
-        this.page = 1;
+        this.pageNo = 1;
         this.makeDefault()
     }
 
@@ -99,7 +99,7 @@ export default class PDFDoc extends PDFDocument{
 
     addDocPage(opt = {}){
         if(!opt.margin) opt.margin = 0;
-        this.page += 1;
+        this.pageNo += 1;
         this.components.push({_draw: (doc) => doc.addPage(opt)});
         return this;
     }
