@@ -68,7 +68,7 @@ export default class Label extends _Component {
         y
     ) {
         if(this.text.contains("|PAGE_NO|")) this.text = this.text.replace(/\|PAGE_NO\|/g, doc.pageNo);
-        if(this.text.contains("|DATE_SHRT|")) this.text = this.text.replace(/\|DATE_SHRT\|/g, new Date().getShortDate());
+        if(this.text.contains("|DATE_SHRT|")) this.text = this.text.replace(/\|DATE_SHRT\|/g, new Date().toShortDate());
         if(this.text.contains("|DATE_FULL|")) this.text = this.text.replace(/\|DATE_FULL\|/g, new Date());
 
         this.width = Label.__getTextLen(this.text, this.font, this.size);
